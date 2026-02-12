@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>CinemaOS | Spatial</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
+    <!-- Mux.js for better stream handling -->
+    <script src="https://cdn.jsdelivr.net/npm/mux.js@6.3.0/dist/mux.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['IBM Plex Sans Arabic', 'sans-serif'],
+            },
+            colors: {
+              glass: {
+                100: 'rgba(255, 255, 255, 0.1)',
+                200: 'rgba(255, 255, 255, 0.2)',
+                300: 'rgba(255, 255, 255, 0.3)',
+                border: 'rgba(255, 255, 255, 0.15)',
+              }
+            },
+            animation: {
+              'float': 'float 20s infinite alternate',
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'pulse-glow': 'pulseGlow 3s infinite',
+            },
+            keyframes: {
+              float: {
+                '0%': { transform: 'translate(0, 0) scale(1)' },
+                '100%': { transform: 'translate(20px, 40px) scale(1.1)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(40px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              pulseGlow: {
+                '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Global Resets */
+      body {
+        background-color: #000;
+        color: white;
+        overflow: hidden;
+      }
+      
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* --- IOS 2026 PLAYER THEME --- */
+      .video-js {
+        font-family: 'IBM Plex Sans Arabic', sans-serif;
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      
+      .video-js .vjs-control-bar {
+        background: rgba(20, 20, 20, 0.65) !important;
+        backdrop-filter: blur(24px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+        border-radius: 100px !important;
+        margin: 0 30px 40px 30px !important;
+        width: auto !important;
+        border: 1px solid rgba(255,255,255,0.15);
+        height: 64px !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 20px !important;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      }
+
+      /* Buttons */
+      .video-js .vjs-button {
+        color: rgba(255,255,255,0.9) !important;
+        transition: transform 0.2s ease;
+      }
+      .video-js .vjs-button:hover {
+        transform: scale(1.1);
+        color: #fff !important;
+      }
+
+      /* Progress Bar */
+      .video-js .vjs-progress-control {
+        margin: 0 15px !important;
+      }
+      .video-js .vjs-slider {
+        background-color: rgba(255,255,255,0.2) !important;
+        border-radius: 10px;
+        height: 6px !important;
+      }
+      .video-js .vjs-play-progress {
+        background-color: #fff !important;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      }
+      .video-js .vjs-play-progress:before {
+        display: none !important; /* Remove the circle at end of line for cleaner look */
+      }
+
+      /* Big Play Button (Hidden mostly, but styled just in case) */
+      .video-js .vjs-big-play-button {
+        background: rgba(255,255,255,0.15) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.3) !important;
+        border-radius: 50% !important;
+        width: 90px !important;
+        height: 90px !important;
+        line-height: 90px !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .video-js .vjs-big-play-button:hover {
+        background: rgba(255,255,255,0.25) !important;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      
+      /* Hide error display */
+      .vjs-error-display { display: none !important; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "video.js/": "https://esm.sh/video.js@^8.23.7/",
+    "video.js": "https://esm.sh/video.js@^8.23.7"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
